@@ -14,8 +14,8 @@ global Mask_all
 Current_Mask = Mask_all.Image;
 
 %get mean expression for multipage tiff
-global tiff_name
-large_tiff_location = fullfile(Sample_Set_arranged{1,1},tiff_name);
+global ometif_name
+large_tiff_location = fullfile(Sample_Set_arranged{1,1},ometif_name);
 get_mean = struct2array(regionprops(Current_Mask, ...
     imread(large_tiff_location,marker_position), 'MeanIntensity'))';
 %Check to make sure it is a string

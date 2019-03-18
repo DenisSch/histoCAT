@@ -63,12 +63,12 @@ global tiff_name
 large_tiff_location = fullfile(Sample_Set_arranged{1,1},tiff_name);
 Current_singlecellinfo_nospatial = log(get_mean_all);
 
-tic
+
 %Get spatial features similar to CellProfiler
 props_spatial = regionprops(Current_Mask, BasicFeatures(~strcmp(BasicFeatures,'FormFactor')));
 %Add X and Y coordinates to output
 props_spatial_XY = regionprops(Current_Mask, 'Centroid');
-toc
+
 
 %Add spatial information to data matrix: variable names and
 %data
@@ -89,7 +89,30 @@ BasicFeatures_Matrix = [cat(1,props_spatial.Area),...
 Current_singlecellinfo= [Current_singlecellinfo_nospatial, BasicFeatures_Matrix];
 
 %Function call to expand cells and get the neighbrcellIds
-[ Fcs_Interest_all,length_neighbr,sizes_neighbrs ] = NeighbrCells_histoCATsinglecells(1,allvarnames,Current_channels,Current_Mask,Current_singlecellinfo,...
-    Fcs_Interest_all,length_neighbr,sizes_neighbrs,HashID);
+%[ Fcs_Interest_all,length_neighbr,sizes_neighbrs ] = NeighbrCells_histoCATsinglecells(1,allvarnames,Current_channels,Current_Mask,Current_singlecellinfo,...
+%    Fcs_Interest_all,length_neighbr,sizes_neighbrs,HashID);
+
+%% Export without calculating neighbors
+
+%Add variable names as table
+[~,idx_cur] = ismember(Current_channels,allvarnames);
+cur_cells = zeros(size(Current_singlecellinfo,1),numel(allvarnames));
+cur_cells(:,idx_cur) = Current_singlecellinfo;
+try
+    temp_tableSinglecells = array2table(cur_cells,'VariableNames',allvarnames);
+catch
+    removesplcharacters = regexprep(allvarnames,'[^a-zA-Z0-9_]','');
+    remove_beginnum = regexprep(removesplcharacters,'^[0-9]*','');
+    temp_tableSinglecells = array2table(cur_cells,'VariableNames',remove_beginnum);
+end
+
+lenIDs    = unique(Current_Mask);
+len       = double(lenIDs(lenIDs ~= 0));
+CellId = len';
+imid_cellid   = cellfun(@(x) [hex2dec(HashID{1}) x],num2cell(CellId),'UniformOutput',false);
+temp_tableimidcellid = array2table(cell2mat(imid_cellid'),'VariableNames',{'ImageId','CellId'});
+
+Fcs_Interest_all{1,1} = [temp_tableimidcellid temp_tableSinglecells];
+
 
 end

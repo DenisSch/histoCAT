@@ -1,4 +1,4 @@
-function [] = Headless_histoCAT_loading(samplefolders_str,tiff_name,Marker_CSV)
+function [] = Headless_histoCAT_loading(samplefolders_str,ometif_name,segmentationfolder_str, Marker_CSV)
 %HEADLESS_HISTOCAT_LOADING Headless loading for histoCAT
 %   This function enables headless loading in histoCAT. This also enables
 %   O2 cluster processing. It is optimized for large multipage tiffs.
@@ -9,13 +9,15 @@ tic
 
 %% Please adapt this part to your data
 % Load multipage tiff file(s)
-samplefolders_str = '/Users/denis/Desktop/PS1_40b_42';
+%samplefolders_str = 'X:\sorger\data\RareCyte\Connor\Topacio_P2_AF\ashlar\C0020\feature_extraction';
 samplefolders = {samplefolders_str};
-tiff_name = 'PS1_40b_42.ome.tif';
-tiff_name_raw = strsplit(tiff_name,'.');
+segmentationfolder = [segmentationfolder_str];
+
+%tiff_name = 'C0020.ome.tif';
+tiff_name_raw = strsplit(ometif_name,'.');
 
 % Where is the marker list
-Marker_CSV = '/Users/denis/Desktop/PS1_40b_42/Nicole5_Markers.csv';
+%Marker_CSV = 'F:\CycIFanalysis\Topacio\Phase I&II\quantification_qc\channel_metadata_12.csv';
 Marker_list = readtable(Marker_CSV,'ReadVariableNames',false);
 
 % Define pixel expansion
@@ -27,11 +29,12 @@ transform_option_batch = 'log';
 % global just for batch mode
 global Marker_CSV
 global transform_option_batch
-global tiff_name
+global ometif_name
 
 %% Extract code from "Master_LoadSamples"
 %Call global variables
 global Sample_Set_arranged
+global Masks_folders
 global Mask_all
 global Fcs_Interest_all
 global HashID
@@ -40,14 +43,17 @@ global HashID
 [ samplefolders,fcsfiles_path,HashID] = Load_SampleFolders(HashID,samplefolders);
 
 % Load all the db files
-[Sample_Set_arranged,Mask_all,Tiff_all,...
-    Tiff_name]= Load_MatrixDB(samplefolders,Sample_Set_arranged,Mask_all);
+[Sample_Set_arranged,Tiff_all,...
+    Tiff_name]= Load_MatrixDB(samplefolders,Sample_Set_arranged, ometif_name);
+
+[Masks_folders]= {segmentationfolder};
+[Mask_all] = Load_mask(Masks_folders,Mask_all,1);
 
 % Save session to folder
 sessionData_folder = fullfile('output',tiff_name_raw{1,1});
 mkdir(sessionData_folder);
 sessionData_name = fullfile('output',tiff_name_raw{1,1},'session.mat');
-save(sessionData_name);
+save(sessionData_name, '-v7.3');
 
 %% Parfor loop or submit to cluster
 % get mean expression for multipage tiff
@@ -80,11 +86,11 @@ end
 %Run single cell processing
 [Fcs_Interest_all] = Process_SingleCell_Tiff_Mask_batch(Tiff_all,Tiff_name,...
     Mask_all,Fcs_Interest_all,HashID,get_mean_all,get_mean_name_all);
-
 toc
-
+tic
 writetable(Fcs_Interest_all{1,1},...
     fullfile(sessionData_folder, strcat(tiff_name_raw{1,1},'.csv')));
+toc
 
 end
 

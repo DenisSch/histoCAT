@@ -1,4 +1,4 @@
-function [Sample_Set_arranged,Mask_all,Tiff_all,Tiff_name] = Load_MatrixDB(samplefolders,Sample_Set_arranged,Mask_all)
+function [Sample_Set_arranged,Tiff_all,Tiff_name] = Load_MatrixDB(samplefolders,Sample_Set_arranged, ometif_name)
 % LOAD_MATRIXDB: Main function for loading tiffs and mask data
 %
 % Input variable:
@@ -32,13 +32,13 @@ for i=1:size(Sample_Set_arranged,2)
     fileList = getAllFiles(char(Sample_Set_arranged(i)));
     
     %Extract tiffs (besides the one representing a mask)
-    tiff_position = find(~cellfun('isempty',regexp(fileList,'(?<!ask)\.tif*')))';
-    
+    tiff_position = find(~cellfun('isempty',regexp(fileList,ometif_name)))';
+    %tiff_position=1;
     %Extract image info from tiff
     Image_info = imfinfo(char(fileList(tiff_position)));
     
     %Load all mask from the TMA
-    [Mask_all] = Load_mask(Sample_Set_arranged,Mask_all,i);
+    %[Mask_all] = Load_mask(Sample_Set_arranged,Mask_all,i);
     
     %Exclude from loading if multipage tiff
     if size(Image_info,1)>2        
