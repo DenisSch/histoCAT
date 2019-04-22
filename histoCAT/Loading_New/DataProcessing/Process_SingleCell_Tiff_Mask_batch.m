@@ -86,6 +86,8 @@ BasicFeatures_Matrix = [cat(1,props_spatial.Area),...
     cat(1,props_spatial.Orientation),...
     cat(1,props_spatial_XY.Centroid)];
 
+save Current_singlecellinfo_nospatial BasicFeatures_Matrix
+
 Current_singlecellinfo= [Current_singlecellinfo_nospatial, BasicFeatures_Matrix];
 
 %Function call to expand cells and get the neighbrcellIds
