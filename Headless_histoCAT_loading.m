@@ -10,6 +10,8 @@ function [] = Headless_histoCAT_loading...
 
 % Histology Topography Cytometry Analysis Toolbox (histoCAT)
 % Denis Schapiro - Independent Fellow -  Harvard and Broad Institute - 2019
+clear all
+
 addpath(genpath(pwd))
 tic
 
