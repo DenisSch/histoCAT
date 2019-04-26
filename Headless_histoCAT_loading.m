@@ -10,8 +10,6 @@ function [] = Headless_histoCAT_loading...
 
 % Histology Topography Cytometry Analysis Toolbox (histoCAT)
 % Denis Schapiro - Independent Fellow -  Harvard and Broad Institute - 2019
-clear all
-
 addpath(genpath(pwd))
 tic
 
@@ -58,14 +56,15 @@ global HashID
 % Save session to folder
 sessionData_folder = fullfile('output',tiff_name_raw{1,1});
 mkdir(sessionData_folder);
-sessionData_name = fullfile('output',tiff_name_raw{1,1},'session.mat');
+sessionData_name = fullfile('output',tiff_name_raw{1,1},...
+    strcat(tiff_name_raw{1,1},'_session.mat'));
 save(sessionData_name,'-v7.3');
 
 %% Parfor loop or submit to cluster
 % get mean expression for multipage tiff
 parfor i=1:size(Marker_list,1)
     % Run locally
-    [get_mean,get_mean_name] = Get_mean_batch(i,sessionData_name);
+    [get_mean,get_mean_name] = Get_mean_batch(i,sessionData_name,tiff_name_raw);
     
     %     % Submit to system
     %     cluster_command = 'sbatch -p short -c 1 -t 1:00:00 --mem=8000 ';
@@ -81,17 +80,17 @@ get_mean_name_all = {};
 for k=1:size(Marker_list,1)
     % load all Markers and create "get_mean"
     Name_to_load = fullfile(sessionData_folder,...
-        strcat('Cell_',table2cell(Marker_list(k,1)),'.mat'));
+        strcat('Cell_',tiff_name_raw{1,1},table2cell(Marker_list(k,1)),'.mat'));
     load(char(Name_to_load));
     % Create matrix with
     get_mean_all = [get_mean_all,get_mean];
-      get_mean_name_all{1,k} = strcat('Cell_',char(table2cell(Marker_list(k,1))));
+    get_mean_name_all{1,k} = strcat('Cell_',tiff_name_raw{1,1},char(table2cell(Marker_list(k,1))));
 end
 
 %% Run spatial
 %Run single cell processing
 [Fcs_Interest_all] = Process_SingleCell_Tiff_Mask_batch(Tiff_all,Tiff_name,...
-    Mask_all,Fcs_Interest_all,HashID,get_mean_all,get_mean_name_all);
+    Mask_all,Fcs_Interest_all,HashID,get_mean_all,get_mean_name_all,sessionData_name);
 
 toc
 

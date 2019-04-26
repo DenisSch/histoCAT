@@ -1,6 +1,6 @@
 function [Fcs_Interest_all] = Process_SingleCell_Tiff_Mask_batch(...
     Tiff_all,Tiff_name,Mask_all,Fcs_Interest_all,HashID,...
-    get_mean_all,get_mean_name_all,varargin)
+    get_mean_all,get_mean_name_all,sessionData_name,varargin)
 % PROCESS_SINGLECELL_TIFF_MASK_BATCH:
 % This function stores the single cell information along with the expansion
 % of pixels in mask mentioned by user and gets their neighbours. All
@@ -25,7 +25,7 @@ function [Fcs_Interest_all] = Process_SingleCell_Tiff_Mask_batch(...
 % Denis Schapiro - Bodenmiller Group - UZH
 
 % Load session
-load session.mat
+load(sessionData_name)
 
 % Get global variables
 global samplefolders
