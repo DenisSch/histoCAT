@@ -16,9 +16,22 @@ function [Mask_all,Tiff_all,Tiff_name] = Load_MatrixDB_batch(mask_location)
 % Denis Schapiro - Bodenmiller Group - UZH
 
 % Load mask
-Mask_all(1).Image = imread(mask_location);
-
-% Process 
+tiff_info = imfinfo(mask_location);
+if tiff_info.BitDepth == 32
+    % Load mask with single precision 32 bit float
+    Mask_single_precision = imread(mask_location);
+    % Extract unique values corresponding to CellIDs
+    [a b c] = unique(Mask_single_precision);
+    % HARDCODED!!! First "CellID" is background zeros
+    a(1,1) = 0;
+    % Create a 32ubit mask without float 
+    a_uint32 = uint32(a*(2^32));
+    % Reshape vector to matrix with unique value location
+    Mask_all(1).Image = reshape(a_uint32(c),size(Mask_single_precision));
+else
+    Mask_all(1).Image = imread(mask_location);
+end
+% Process
 [Tiff_all,Tiff_name] = Load_multipage_tiff(1);
 
 end
