@@ -11,7 +11,7 @@ function [] = Headless_histoCAT_loading...
 % Histology Topography Cytometry Analysis Toolbox (histoCAT)
 % Denis Schapiro - Independent Fellow -  Harvard and Broad Institute - 2019
 addpath(genpath(pwd))
-tic
+
 
 %% Please adapt this part to your data
 %Load multipage tiff file(s)
@@ -40,8 +40,8 @@ expansionpixels = 4;
 % Transformation: option_list = {'Do not transform data','arcsinh','log'};
 transform_option_batch = 'log';
 
-%% Extract code from "Master_LoadSamples"
-%Call global variables
+%% Check if data already exist otherwise extract extract code from "Master_LoadSamples"
+% Call global variables
 global Mask_all
 global Fcs_Interest_all
 global HashID
@@ -59,9 +59,41 @@ mkdir(sessionData_folder);
 sessionData_name = fullfile('output',tiff_name_raw{1,1},...
     strcat(tiff_name_raw{1,1},'_session.mat'));
 save(sessionData_name,'-v7.3');
+sessionData_name = fullfile('output',tiff_name_raw{1,1},...
+    strcat(tiff_name_raw{1,1},'_session.mat'));
+
+if isfile(sessionData_name)
+    disp('sessionData found');
+    load(sessionData_name);
+    disp('sessionData loaded');
+else
+    %Call global variables
+    global Mask_all
+    global Fcs_Interest_all
+    global HashID
+    
+    % Function call to store the sample folder
+    [samplefolders,fcsfiles_path,HashID] = Load_SampleFolders(HashID,samplefolders);
+    
+    % Load all the db files
+    [Mask_all,Tiff_all,...
+        Tiff_name]= Load_MatrixDB_batch(mask_location);
+    
+    % Save session to folder
+    sessionData_folder = fullfile('output',tiff_name_raw{1,1});
+    mkdir(sessionData_folder);
+    sessionData_name = fullfile('output',tiff_name_raw{1,1},...
+        strcat(tiff_name_raw{1,1},'_session.mat'));
+    disp('saving session')
+    save(sessionData_name,'-v7.3');
+    disp('session saved')
+end
 
 %% Parfor loop or submit to cluster
+% Check if all files already exist
+
 % get mean expression for multipage tiff
+
 parfor i=1:size(Marker_list,1)
     % Run locally
     [get_mean,get_mean_name] = Get_mean_batch(i,sessionData_name,tiff_name_raw);
@@ -76,7 +108,7 @@ end
 % Combine get_mean's
 get_mean_all = [];
 get_mean_name_all = {};
-
+disp('combine all means')
 for k=1:size(Marker_list,1)
     % load all Markers and create "get_mean"
     Name_to_load = fullfile(sessionData_folder,...
@@ -86,14 +118,14 @@ for k=1:size(Marker_list,1)
     get_mean_all = [get_mean_all,get_mean];
     get_mean_name_all{1,k} = strcat('Cell_',tiff_name_raw{1,1},char(table2cell(Marker_list(k,1))));
 end
+disp('all means combined')
 
 %% Run spatial
 %Run single cell processing
+disp('run spatial')
 [Fcs_Interest_all] = Process_SingleCell_Tiff_Mask_batch(Tiff_all,Tiff_name,...
     Mask_all,Fcs_Interest_all,HashID,get_mean_all,get_mean_name_all,sessionData_name);
-
-toc
-
+disp('save CSV')
 writetable(Fcs_Interest_all{1,1},...
     fullfile(sessionData_folder, strcat(tiff_name_raw{1,1},'.csv')));
 
