@@ -105,6 +105,8 @@ parfor i=1:size(Marker_list,1)
     
 end
 
+delete(gcp);
+
 % Combine get_mean's
 get_mean_all = [];
 get_mean_name_all = {};
