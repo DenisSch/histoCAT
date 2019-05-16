@@ -62,11 +62,11 @@ save(sessionData_name,'-v7.3');
 sessionData_name = fullfile('output',tiff_name_raw{1,1},...
     strcat(tiff_name_raw{1,1},'_session.mat'));
 
-if isfile(sessionData_name)
-    disp('sessionData found');
-    load(sessionData_name);
-    disp('sessionData loaded');
-else
+% if isfile(sessionData_name)
+%     disp('sessionData found');
+%     load(sessionData_name);
+%     disp('sessionData loaded');
+% else
     %Call global variables
     global Mask_all
     global Fcs_Interest_all
@@ -87,7 +87,7 @@ else
     disp('saving session')
     save(sessionData_name,'-v7.3');
     disp('session saved')
-end
+%end
 
 %% Parfor loop or submit to cluster
 % Check if all files already exist
