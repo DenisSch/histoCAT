@@ -3,7 +3,7 @@ function [] = Headless_histoCAT_loading...
     tiff_name,...
     segmentationfolder_str,...
     mask_name,...
-    Marker_CSV)
+    Marker_CSV,expansionpixels)
 %HEADLESS_HISTOCAT_LOADING Headless loading for histoCAT
 %   This function enables headless loading in histoCAT. This also enables
 %   O2 cluster processing. It is optimized for large multipage tiffs.
@@ -35,7 +35,7 @@ global transform_option_batch
 global Tiff_name
 
 % Define pixel expansion
-expansionpixels = 4;
+% expansionpixels = 30;
 
 % Transformation: option_list = {'Do not transform data','arcsinh','log'};
 transform_option_batch = 'log';
