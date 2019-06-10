@@ -1,5 +1,5 @@
 function [ Fcs_Interest_all,length_neighbr,sizes_neighbrs ] = NeighbrCells_histoCATsinglecells(rownum,allvarnames,Current_channels,Current_Mask,...
-    Current_singlecellinfo,Fcs_Interest_all,length_neighbr,sizes_neighbrs,HashID)
+    Current_singlecellinfo,Fcs_Interest_all,length_neighbr,sizes_neighbrs,HashID,expansionpixels)
 % NEIGHBRCELLS_HISTOCATSINGLECELLS: This function finds the neighboring cells and
 % updates all neighbor ID's to the Fcs_interest_all table and the
 % sessionData matrix. Runing all possibilities (1:6) of pixelexpansions when searching for neighboring
@@ -44,8 +44,8 @@ neighbr_cells          = {};
 numbr_of_neighbors     = [];
 imid_cellid = [];
 
-expansion_single = 4;
-expansionNeighbrs = 4;
+expansion_single = expansionpixels;
+expansionNeighbrs = expansionpixels;
 
 tic
 %This first part is for percent touching and number neighbor calculation on
