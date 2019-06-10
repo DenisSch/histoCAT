@@ -1,6 +1,6 @@
 function [Fcs_Interest_all] = Process_SingleCell_Tiff_Mask_batch(...
     Tiff_all,Tiff_name,Mask_all,Fcs_Interest_all,HashID,...
-    get_mean_all,get_mean_name_all,sessionData_name,varargin)
+    get_mean_all,get_mean_name_all,sessionData_name,expansionpixels,varargin)
 % PROCESS_SINGLECELL_TIFF_MASK_BATCH:
 % This function stores the single cell information along with the expansion
 % of pixels in mask mentioned by user and gets their neighbours. All
@@ -93,6 +93,6 @@ Current_singlecellinfo= [Current_singlecellinfo_nospatial, BasicFeatures_Matrix]
 
 %Function call to expand cells and get the neighbrcellIds
 [ Fcs_Interest_all,length_neighbr,sizes_neighbrs ] = NeighbrCells_histoCATsinglecells(1,allvarnames,Current_channels,Current_Mask,Current_singlecellinfo,...
-    Fcs_Interest_all,length_neighbr,sizes_neighbrs,HashID);
+    Fcs_Interest_all,length_neighbr,sizes_neighbrs,HashID,expansionpixels);
 
 end
