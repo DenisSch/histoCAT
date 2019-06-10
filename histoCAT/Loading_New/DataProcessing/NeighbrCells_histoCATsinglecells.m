@@ -44,8 +44,8 @@ neighbr_cells          = {};
 numbr_of_neighbors     = [];
 imid_cellid = [];
 
-expansion_single = expansionpixels;
-expansionNeighbrs = expansionpixels;
+expansion_single = expansionpixels
+expansionNeighbrs = expansionpixels
 
 tic
 %This first part is for percent touching and number neighbor calculation on
@@ -54,7 +54,7 @@ CellId = len';
 %Get coordinates of each CellId
 [r,c] = cellfun(@(x) ind2sub([sr sc],x),{props(CellId).PixelIdxList},'UniformOutput', false);
 %The below conditions check the min and max conditions for each.Do NOT CHANGE
-rmax = cellfun(@(x) min(sr,max(x) + (expansion_single)), r);
+rmax = cellfun(@(x) min(sr,max(x) + (expansion_single)),r);
 rmin = cellfun(@(x) max(1,min(x)  - (expansion_single)),r);
 cmax = cellfun(@(x) min(sc,max(x) + (expansion_single)),c);
 cmin = cellfun(@(x) max(1,min(x)  - (expansion_single)),c);
