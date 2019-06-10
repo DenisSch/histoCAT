@@ -126,7 +126,8 @@ disp('all means combined')
 %Run single cell processing
 disp('run spatial')
 [Fcs_Interest_all] = Process_SingleCell_Tiff_Mask_batch(Tiff_all,Tiff_name,...
-    Mask_all,Fcs_Interest_all,HashID,get_mean_all,get_mean_name_all,sessionData_name);
+    Mask_all,Fcs_Interest_all,HashID,get_mean_all,get_mean_name_all,...
+    sessionData_name,expansionpixels);
 disp('save CSV')
 writetable(Fcs_Interest_all{1,1},...
     fullfile(sessionData_folder, strcat(tiff_name_raw{1,1},'.csv')));
