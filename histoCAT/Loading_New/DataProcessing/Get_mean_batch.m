@@ -6,6 +6,8 @@ function [get_mean,get_mean_name] = Get_mean_batch(marker_position,...
 % Load session
 load(sessionData_name)
 
+clear get_mean
+
 % Get global variables
 global samplefolders
 global Mask_all
@@ -16,7 +18,7 @@ Current_Mask = Mask_all.Image;
 % get mean expression for multipage tiff
 global tiff_name
 large_tiff_location = fullfile(samplefolders{1,1},tiff_name);
-get_mean = struct2array(regionprops(Current_Mask, ...
+    get_mean = struct2array(regionprops(Current_Mask, ...
     imread(large_tiff_location,marker_position), 'MeanIntensity'))';
 %Check to make sure it is a string
 get_mean_name_onlyname = (table2cell(Marker_list(marker_position,1)));
