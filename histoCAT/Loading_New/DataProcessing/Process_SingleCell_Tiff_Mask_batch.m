@@ -1,6 +1,6 @@
 function [Fcs_Interest_all] = Process_SingleCell_Tiff_Mask_batch(...
     Tiff_all,Tiff_name,Mask_all,Fcs_Interest_all,HashID,...
-    get_mean_all,get_mean_name_all,sessionData_name,expansionpixels)
+    get_mean_all,get_mean_name_all,sessionData_name,expansionpixels,neighbors)
 % PROCESS_SINGLECELL_TIFF_MASK_BATCH:
 % This function stores the single cell information along with the expansion
 % of pixels in mask mentioned by user and gets their neighbours. All
@@ -86,13 +86,25 @@ BasicFeatures_Matrix = [cat(1,props_spatial.Area),...
     cat(1,props_spatial.Orientation),...
     cat(1,props_spatial_XY.Centroid)];
 
-save('Save_before_spatial.mat','Current_singlecellinfo_nospatial','BasicFeatures_Matrix','-v7.3');
-disp('saved');
 
 Current_singlecellinfo= [Current_singlecellinfo_nospatial, BasicFeatures_Matrix];
 
+% Save matrix with basic spatial fearures and names
+%save('Save_before_spatial.mat','Current_singlecellinfo','Current_channels','-v7.3');
+%disp('saved');
+
+if neighbors == 'no'
+    disp('skip neighbors')
+% "No neighborhood calculation" selected
+Fcs_Interest_all{1,1} = array2table(Current_singlecellinfo,'VariableNames',Current_channels);
+
+elseif neighbors == 'yes'
+    disp('running neighbors')
 %Function call to expand cells and get the neighbrcellIds
 [ Fcs_Interest_all,length_neighbr,sizes_neighbrs ] = NeighbrCells_histoCATsinglecells(1,allvarnames,Current_channels,Current_Mask,Current_singlecellinfo,...
     Fcs_Interest_all,length_neighbr,sizes_neighbrs,HashID,expansionpixels);
 
+else
+    disp('Please use only "yes" or "no"')
+end
 end
