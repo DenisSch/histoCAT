@@ -44,8 +44,8 @@ neighbr_cells          = {};
 numbr_of_neighbors     = [];
 imid_cellid = [];
 
-expansion_single = str2double(expansionpixels)
-expansionNeighbrs = str2double(expansionpixels)
+expansion_single = str2double(expansionpixels);
+expansionNeighbrs = str2double(expansionpixels);
 
 tic
 %This first part is for percent touching and number neighbor calculation on
