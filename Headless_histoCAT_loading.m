@@ -68,10 +68,10 @@ sessionData_name = fullfile('output',tiff_name_raw{1,1},...
 %     disp('sessionData loaded');
 % else
     %Call global variables
-    global Mask_all
-    global Fcs_Interest_all
-    global HashID
-    
+%     global Mask_all
+%     global Fcs_Interest_all
+%     global HashID
+%     
     % Function call to store the sample folder
     [samplefolders,fcsfiles_path,HashID] = Load_SampleFolders(HashID,samplefolders);
     
@@ -95,8 +95,9 @@ sessionData_name = fullfile('output',tiff_name_raw{1,1},...
 % get mean expression for multipage tiff
 
 parfor i=1:size(Marker_list,1)
+%for i=1:size(Marker_list,1)
     % Run locally
-    [get_mean,get_mean_name] = Get_mean_batch(i,sessionData_name,tiff_name_raw);
+    [get_pixels,get_pixels_name] = Get_pixels_batch(i,sessionData_name,tiff_name_raw);
     
     %     % Submit to system
     %     cluster_command = 'sbatch -p short -c 1 -t 1:00:00 --mem=8000 ';
@@ -105,28 +106,28 @@ parfor i=1:size(Marker_list,1)
     
 end
 
-delete(gcp);
+%delete(gcp);
 
 % Combine get_mean's
-get_mean_all = [];
-get_mean_name_all = {};
-disp('combine all means')
+get_pixels_all = [];
+get_pixels_name_all = {};
+disp('combine all pixels')
 for k=1:size(Marker_list,1)
     % load all Markers and create "get_mean"
     Name_to_load = fullfile(sessionData_folder,...
         strcat('Cell_',tiff_name_raw{1,1},table2cell(Marker_list(k,1)),'.mat'));
     load(char(Name_to_load));
     % Create matrix with
-    get_mean_all = [get_mean_all,get_mean];
-    get_mean_name_all{1,k} = strcat('Cell_',tiff_name_raw{1,1},char(table2cell(Marker_list(k,1))));
+    get_pixels_all = [get_pixels_all,get_pixels];
+    get_pixels_name_all{1,k} = strcat('Cell_',tiff_name_raw{1,1},char(table2cell(Marker_list(k,1))));
 end
-disp('all means combined')
+disp('all pixels combined')
 
 %% Run spatial
 %Run single cell processing
 disp('run spatial')
 [Fcs_Interest_all] = Process_SingleCell_Tiff_Mask_batch(Tiff_all,Tiff_name,...
-    Mask_all,Fcs_Interest_all,HashID,get_mean_all,get_mean_name_all,...
+    Mask_all,Fcs_Interest_all,HashID,get_pixels_all,get_pixels_name_all,...
     sessionData_name,expansionpixels);
 disp('save CSV')
 writetable(Fcs_Interest_all{1,1},...

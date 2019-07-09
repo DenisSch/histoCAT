@@ -100,6 +100,7 @@ cur_cells = Current_singlecellinfo;
 %Add variable names as table
 try
     temp_tableSinglecells = array2table(cur_cells,'VariableNames',allvarnames);
+    %temp_tableSinglecells = cell2table(cur_cells,'VariableNames',allvarnames);
 catch
     removesplcharacters = regexprep(allvarnames,'[^a-zA-Z0-9_]','');
     remove_beginnum = regexprep(removesplcharacters,'^[0-9]*','');
@@ -107,6 +108,7 @@ catch
 end
 
 %Store everything in fcs file structure in FCS_Interest_all
-Fcs_Interest_all{rownum,1} = [temp_tableimidcellid temp_tableSinglecells temp_table_percenttouch temp_table_NumberNeighbors neighbour_CellId_table_all];
+%Fcs_Interest_all{rownum,1} = [temp_tableimidcellid temp_tableSinglecells temp_table_percenttouch temp_table_NumberNeighbors neighbour_CellId_table_all];
+Fcs_Interest_all{rownum,1} = [temp_tableSinglecells];
 
 end
