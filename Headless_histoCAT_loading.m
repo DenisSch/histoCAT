@@ -144,13 +144,14 @@ writetable(Fcs_Interest_all{1,1},...
 
 tic
 disp('Test_CSV_file')
-Amount_cells_mask = unique(Mask_all.Image)-1;
-Amount_cells_mask_CSV = size(Fcs_Interest_all{1,1});
-if Amount_cells_mask==Amount_cells_mask_CSV
+Amount_cells_mask = double(unique(Mask_all.Image));
+Amount_cells_CSV = size(Fcs_Interest_all{1,1},1);
+if size(Amount_cells_mask,1)-1==Amount_cells_CSV
     disp('Everything done - good job!')
 else
     disp('CSV file is not correct!!!')
 end
+toc
 
 end
 
