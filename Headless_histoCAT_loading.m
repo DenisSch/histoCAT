@@ -12,13 +12,8 @@ function [] = Headless_histoCAT_loading...
 % Denis Schapiro - Independent Fellow -  Harvard and Broad Institute - 2019
 addpath(genpath(pwd))
 
-% Remove warnings for global variable
-warning('off','MATLAB:declareGlobalBeforeUse')
-rmpath('declareGlobalBeforeUse')
-
-% Remove warnings for directory exists
-warning('off','MATLAB:MKDIR:DirectoryExists')
-rmpath('MKDIR:DirectoryExists')
+% Remove warnings
+warning off;
 
 %% Please adapt this part to your data
 %Load multipage tiff file(s)
@@ -135,7 +130,7 @@ for k=1:size(Marker_list,1)
     get_mean_all = [get_mean_all,get_mean];
     get_mean_name_all{1,k} = strcat('Cell_',tiff_name_raw{1,1},char(table2cell(Marker_list(k,1))));
 end
-disp('all means combined')
+disp('all means combined') 
 
 %% Run spatial
 %Run single cell processing
