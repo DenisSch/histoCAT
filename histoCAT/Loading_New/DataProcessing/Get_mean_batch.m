@@ -3,10 +3,11 @@ function [get_mean,get_mean_name] = Get_mean_batch(marker_position,...
 %UNTITLED4 Summary of this function goes here
 %   Detailed explanation goes here
 
+% Remove warnings
+warning off;
+
 % Load session
 load(sessionData_name)
-
-clear get_mean
 
 % Get global variables
 global samplefolders
