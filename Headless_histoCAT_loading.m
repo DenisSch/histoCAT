@@ -38,7 +38,7 @@ else
     disp('The csv file does contain non-unique marker names')
     return
 end
-    
+
 % global just for batch mode
 global Marker_list
 global transform_option_batch
@@ -77,26 +77,26 @@ sessionData_name = fullfile('output',tiff_name_raw{1,1},...
 %     load(sessionData_name);
 %     disp('sessionData loaded');
 % else
-    %Call global variables
-    global Mask_all
-    global Fcs_Interest_all
-    global HashID
-    
-    % Function call to store the sample folder
-    [samplefolders,fcsfiles_path,HashID] = Load_SampleFolders(HashID,samplefolders);
-    
-    % Load all the db files
-    [Mask_all,Tiff_all,...
-        Tiff_name]= Load_MatrixDB_batch(mask_location);
-    
-    % Save session to folder
-    sessionData_folder = fullfile('output',tiff_name_raw{1,1});
-    mkdir(sessionData_folder);
-    sessionData_name = fullfile('output',tiff_name_raw{1,1},...
-        strcat(tiff_name_raw{1,1},'_session.mat'));
-    disp('saving session')
-    save(sessionData_name,'-v7.3');
-    disp('session saved')
+%Call global variables
+global Mask_all
+global Fcs_Interest_all
+global HashID
+
+% Function call to store the sample folder
+[samplefolders,fcsfiles_path,HashID] = Load_SampleFolders(HashID,samplefolders);
+
+% Load all the db files
+[Mask_all,Tiff_all,...
+    Tiff_name]= Load_MatrixDB_batch(mask_location);
+
+% Save session to folder
+sessionData_folder = fullfile('output',tiff_name_raw{1,1});
+mkdir(sessionData_folder);
+sessionData_name = fullfile('output',tiff_name_raw{1,1},...
+    strcat(tiff_name_raw{1,1},'_session.mat'));
+disp('saving session')
+save(sessionData_name,'-v7.3');
+disp('session saved')
 %end
 
 %% Parfor loop or submit to cluster
@@ -130,7 +130,7 @@ for k=1:size(Marker_list,1)
     get_mean_all = [get_mean_all,get_mean];
     get_mean_name_all{1,k} = strcat('Cell_',tiff_name_raw{1,1},char(table2cell(Marker_list(k,1))));
 end
-disp('all means combined') 
+disp('all means combined')
 
 %% Run spatial
 %Run single cell processing
@@ -141,6 +141,16 @@ disp('run spatial?')
 disp('save CSV')
 writetable(Fcs_Interest_all{1,1},...
     fullfile(sessionData_folder, strcat(tiff_name_raw{1,1},'.csv')));
+
+tic
+disp('Test_CSV_file')
+Amount_cells_mask = unique(Mask_all.Image)-1;
+Amount_cells_mask_CSV = size(Fcs_Interest_all{1,1});
+if Amount_cells_mask==Amount_cells_mask_CSV
+    disp('Everything done - good job!')
+else
+    disp('CSV file is not correct!!!')
+end
 
 end
 
