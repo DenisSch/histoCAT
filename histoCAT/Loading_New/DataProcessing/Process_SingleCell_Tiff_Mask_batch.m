@@ -59,14 +59,14 @@ global tiff_name
 
 % Load all markers
 
-%Current_singlecellinfo_nospatial = log(get_mean_all);
-large_tiff_location = fullfile(samplefolders{1,1},tiff_name);
-Current_singlecellinfo_nospatial = {};
-for i = 1:size(get_mean_all,1)
-    for j = 1:size(get_mean_all,2)
-        Current_singlecellinfo_nospatial{i,j} = log(double(get_mean_all{i,j}));
-    end
-end
+Current_singlecellinfo_nospatial = log(get_mean_all);
+% large_tiff_location = fullfile(samplefolders{1,1},tiff_name);
+% Current_singlecellinfo_nospatial = {};
+% for i = 1:size(get_mean_all,1)
+%     for j = 1:size(get_mean_all,2)
+%         Current_singlecellinfo_nospatial{i,j} = log(double(get_mean_all{i,j}));
+%     end
+% end
 
 
 tic
@@ -96,8 +96,8 @@ BasicFeatures_Matrix = [cat(1,props_spatial.Area),...
 save('Save_before_bug.mat','Current_singlecellinfo_nospatial','BasicFeatures_Matrix','-v7.3');
 disp('saved');
 
-%Current_singlecellinfo= [Current_singlecellinfo_nospatial, BasicFeatures_Matrix];
-Current_singlecellinfo= [num2cell(Current_singlecellinfo_nospatial), num2cell(BasicFeatures_Matrix)];
+Current_singlecellinfo= [Current_singlecellinfo_nospatial, BasicFeatures_Matrix];
+%Current_singlecellinfo= [num2cell(Current_singlecellinfo_nospatial), num2cell(BasicFeatures_Matrix)];
 
 %Function call to expand cells and get the neighbrcellIds
 [ Fcs_Interest_all,length_neighbr,sizes_neighbrs ] = NeighbrCells_histoCATsinglecells(1,allvarnames,Current_channels,Current_Mask,Current_singlecellinfo,...

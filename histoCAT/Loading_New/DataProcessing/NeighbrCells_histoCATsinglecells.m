@@ -44,8 +44,8 @@ neighbr_cells          = {};
 numbr_of_neighbors     = [];
 imid_cellid = [];
 
-expansion_single = str2double(expansionpixels)
-expansionNeighbrs = str2double(expansionpixels)
+expansion_single = str2double(expansionpixels);
+expansionNeighbrs = str2double(expansionpixels);
 
 tic
 %This first part is for percent touching and number neighbor calculation on
@@ -108,7 +108,7 @@ catch
 end
 
 %Store everything in fcs file structure in FCS_Interest_all
-%Fcs_Interest_all{rownum,1} = [temp_tableimidcellid temp_tableSinglecells temp_table_percenttouch temp_table_NumberNeighbors neighbour_CellId_table_all];
-Fcs_Interest_all{rownum,1} = [temp_tableSinglecells];
+Fcs_Interest_all{rownum,1} = [temp_tableimidcellid temp_tableSinglecells temp_table_percenttouch temp_table_NumberNeighbors neighbour_CellId_table_all];
+%Fcs_Interest_all{rownum,1} = [temp_tableSinglecells];
 
 end
