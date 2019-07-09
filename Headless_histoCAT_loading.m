@@ -12,6 +12,13 @@ function [] = Headless_histoCAT_loading...
 % Denis Schapiro - Independent Fellow -  Harvard and Broad Institute - 2019
 addpath(genpath(pwd))
 
+% Remove warnings for global variable
+warning('off','MATLAB:declareGlobalBeforeUse')
+rmpath('declareGlobalBeforeUse')
+
+% Remove warnings for directory exists
+warning('off','MATLAB:MKDIR:DirectoryExists')
+rmpath('MKDIR:DirectoryExists')
 
 %% Please adapt this part to your data
 %Load multipage tiff file(s)
@@ -29,6 +36,14 @@ mask_location = fullfile(segmentationfolder_str,mask_name);
 %Marker_CSV = '/Users/denis/Desktop/Test_folder/Triplet_40_markers.csv';
 Marker_list = readtable(Marker_CSV,'ReadVariableNames',false);
 
+% Test whether unique markers present
+if size(unique(Marker_list)) == size(unique(Marker_list));
+    disp('Names are correct')
+else
+    disp('The csv file does contain non-unique marker names')
+    return
+end
+    
 % global just for batch mode
 global Marker_list
 global transform_option_batch
