@@ -86,7 +86,7 @@ BasicFeatures_Matrix = [cat(1,props_spatial.Area),...
     cat(1,props_spatial.Orientation),...
     cat(1,props_spatial_XY.Centroid)];
 
-save('Save_before_bug.mat','Current_singlecellinfo_nospatial','BasicFeatures_Matrix','-v7.3');
+save('Save_before_spatial.mat','Current_singlecellinfo_nospatial','BasicFeatures_Matrix','-v7.3');
 disp('saved');
 
 Current_singlecellinfo= [Current_singlecellinfo_nospatial, BasicFeatures_Matrix];
