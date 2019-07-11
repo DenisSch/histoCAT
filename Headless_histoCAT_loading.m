@@ -171,5 +171,29 @@ disp('save CSV')
 writetable(Fcs_Interest_all{1,1},...
     fullfile(sessionData_mean_folder, strcat(tiff_name_raw{1,1},'.csv')));
 
+% %% Run AF correlation
+% %Define path where marker mean .mat files are saved
+% mean_path = strcat(samplefolders_str,'mean_output/Example/');
+% exampleCSV = readtable(fullfile(mean_path, 'Example.csv'));
+% 
+% %Extract marker names
+% Marker_list = table2array(readtable(Marker_CSV,'ReadVariableNames',false));
+% numMarkers = length(Marker_list);
+% 
+% %Save pixel arrays for each cell across markers
+% pixels_across_markers = {};
+% 
+% pixel_path = strcat(samplefolders_str,'pixel_output/Example/');
+% 
+% for i = 1:numMarkers
+%     tmp = load(strcat(pixel_path,'Cell_Example',Marker_list{i,1},'.mat'),'get_pixels');
+%     pixels_across_markers{i} = tmp.get_pixels;
+% end
+% 
+% save('pixels_across_markers.mat','pixels_across_markers','-v7.3');
+% disp('saved patient pixels');
+% 
+% %load(pixels_across_markers
+
 end
 
