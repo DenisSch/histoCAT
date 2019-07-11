@@ -93,17 +93,17 @@ Current_singlecellinfo= [Current_singlecellinfo_nospatial, BasicFeatures_Matrix]
 %save('Save_before_spatial.mat','Current_singlecellinfo','Current_channels','-v7.3');
 %disp('saved');
 
-if neighbors == 'no'
+if strcmp(neighbors,'no') == 1
     disp('skip neighbors')
-% "No neighborhood calculation" selected
-Fcs_Interest_all{1,1} = array2table(Current_singlecellinfo,'VariableNames',Current_channels);
-
-elseif neighbors == 'yes'
+    % "No neighborhood calculation" selected
+    Fcs_Interest_all{1,1} = array2table(Current_singlecellinfo,'VariableNames',Current_channels);
+    
+elseif strcmp(neighbors,'yes') == 1
     disp('running neighbors')
-%Function call to expand cells and get the neighbrcellIds
-[ Fcs_Interest_all,length_neighbr,sizes_neighbrs ] = NeighbrCells_histoCATsinglecells(1,allvarnames,Current_channels,Current_Mask,Current_singlecellinfo,...
-    Fcs_Interest_all,length_neighbr,sizes_neighbrs,HashID,expansionpixels);
-
+    %Function call to expand cells and get the neighbrcellIds
+    [ Fcs_Interest_all,length_neighbr,sizes_neighbrs ] = NeighbrCells_histoCATsinglecells(1,allvarnames,Current_channels,Current_Mask,Current_singlecellinfo,...
+        Fcs_Interest_all,length_neighbr,sizes_neighbrs,HashID,expansionpixels);
+    
 else
     disp('Please use only "yes" or "no"')
 end
