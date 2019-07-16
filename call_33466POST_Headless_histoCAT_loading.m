@@ -14,8 +14,7 @@ mask_name = 'Mask.tif';
 Marker_CSV = strcat(samplefolders_str,'Triplet_8_markers.csv');
 expansionpixels = '30';
 
-results_dir = '/home/en100/Pixel_Correlation_Results/'; 
-cd
+cd '/home/en100/Pixel_Correlation_Results/'; 
 
 tic
 %Execute Headless_histoCAT_loading.m
