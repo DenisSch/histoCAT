@@ -29,7 +29,7 @@ disp('ran histoCAT!')
 %Define path where marker mean .mat files are saved
 % mean_path = strcat(samplefolders_str,'mean_output/33466POST/');
 % CSV_33466POST= readtable(fullfile(mean_path, '33466POST.csv'));
-mean_path = strcat(samplefolders_str,'mean_output/Example/');
+mean_path = strcat(genpath(pwd),'mean_output/Example/');
 csv_file= readtable(fullfile(mean_path, 'Example.csv'));
 
 %Extract marker names
@@ -40,7 +40,7 @@ numMarkers = length(Marker_list);
 pixels_across_markers = {};
 
 % pixel_path = strcat(samplefolders_str,'pixel_output/33466POST/');
-pixel_path = strcat(samplefolders_str,'pixel_output/Example/');
+pixel_path = strcat(genpath(pwd),'pixel_output/Example/');
 
 for i = 1:numMarkers
 %     marker_pixels = load(strcat(pixel_path,'Cell_33466POST',Marker_list{i,1},'.mat'),'get_pixels');
