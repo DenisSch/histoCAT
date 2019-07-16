@@ -2,7 +2,7 @@ clear all
 clc
 
 %addpath(genpath('/home/en100/histoCAT'))
-addpath(genpath(pwd))
+addpath(genpath('/home/en100/Pixel_Correlation_Results/'))
 
 %Specify actual parameters to pass to Headless_histoCAT_loading.m
 samplefolders_str = '/home/en100/Images/';
@@ -14,8 +14,8 @@ mask_name = 'Mask.tif';
 Marker_CSV = strcat(samplefolders_str,'Triplet_8_markers.csv');
 expansionpixels = '30';
 
-results_dir = '/home/en100/Pixel_Correlation_Results/'; 
-cd
+%results_dir = '/home/en100/Pixel_Correlation_Results/'; 
+%cd
 
 tic
 %Execute Headless_histoCAT_loading.m
