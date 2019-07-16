@@ -54,13 +54,13 @@ global HashID
     Tiff_name]= Load_MatrixDB_batch(mask_location);
 
 % Save session to folder
-sessionData_mean_folder = fullfile('mean_output',tiff_name_raw{1,1});
-mkdir(sessionData_mean_folder);
-sessionData_mean_name = fullfile('mean_output',tiff_name_raw{1,1},...
-    strcat(tiff_name_raw{1,1},'_session.mat'));
-save(sessionData_mean_name,'-v7.3');
-sessionData_mean_name = fullfile('mean_output',tiff_name_raw{1,1},...
-    strcat(tiff_name_raw{1,1},'_session.mat'));
+% % % sessionData_mean_folder = fullfile('mean_output',tiff_name_raw{1,1});
+% % % mkdir(sessionData_mean_folder);
+% % % sessionData_mean_name = fullfile('mean_output',tiff_name_raw{1,1},...
+% % %     strcat(tiff_name_raw{1,1},'_session.mat'));
+% % % save(sessionData_mean_name,'-v7.3');
+% % % sessionData_mean_name = fullfile('mean_output',tiff_name_raw{1,1},...
+% % %     strcat(tiff_name_raw{1,1},'_session.mat'));
 
 sessionData_pixel_folder = fullfile('pixel_output',tiff_name_raw{1,1});
 mkdir(sessionData_pixel_folder);
@@ -87,14 +87,14 @@ sessionData_pixel_name = fullfile('pixel_output',tiff_name_raw{1,1},...
     [Mask_all,Tiff_all,...
         Tiff_name]= Load_MatrixDB_batch(mask_location);
     
-    % Save session to folder
-    sessionData_mean_folder = fullfile('mean_output',tiff_name_raw{1,1});
-    mkdir(sessionData_mean_folder);
-    sessionData_mean_name = fullfile('mean_output',tiff_name_raw{1,1},...
-        strcat(tiff_name_raw{1,1},'_session.mat'));
-    disp('saving session')
-    save(sessionData_mean_name,'-v7.3');
-    disp('session saved')
+% % %     % Save session to folder
+% % %     sessionData_mean_folder = fullfile('mean_output',tiff_name_raw{1,1});
+% % %     mkdir(sessionData_mean_folder);
+% % %     sessionData_mean_name = fullfile('mean_output',tiff_name_raw{1,1},...
+% % %         strcat(tiff_name_raw{1,1},'_session.mat'));
+% % %     disp('saving session')
+% % %     save(sessionData_mean_name,'-v7.3');
+% % %     disp('session saved')
     
     sessionData_pixel_folder = fullfile('pixel_output',tiff_name_raw{1,1});
     mkdir(sessionData_pixel_folder);
@@ -113,7 +113,7 @@ sessionData_pixel_name = fullfile('pixel_output',tiff_name_raw{1,1},...
 parfor i=1:size(Marker_list,1)
 %for i=1:size(Marker_list,1)
     % Run locally
-    [get_mean,get_mean_name] = Get_mean_batch(i,sessionData_mean_name,tiff_name_raw);
+% % %     [get_mean,get_mean_name] = Get_mean_batch(i,sessionData_mean_name,tiff_name_raw);
     
     %     % Submit to system
     %     cluster_command = 'sbatch -p short -c 1 -t 1:00:00 --mem=8000 ';
@@ -131,10 +131,10 @@ end
 
 delete(gcp);
 
-% Combine get_mean's
-get_mean_all = [];
-get_mean_name_all = {};
-disp('combine all means')
+% % % % Combine get_mean's
+% % % get_mean_all = [];
+% % % get_mean_name_all = {};
+% % % disp('combine all means')
 
 % Combine get_pixels
 get_pixels_all = [];
@@ -150,31 +150,32 @@ for k=1:size(Marker_list,1)
     get_pixels_all = [get_pixels_all,get_pixels];
     get_pixels_name_all{1,k} = strcat('Cell_',tiff_name_raw{1,1},char(table2cell(Marker_list(k,1))));
     
-    % load all Markers and create "get_mean"
-    Name_to_load = fullfile(sessionData_mean_folder,...
-        strcat('Cell_',tiff_name_raw{1,1},table2cell(Marker_list(k,1)),'.mat'));
-    load(char(Name_to_load));
-    % Create matrix with
-    get_mean_all = [get_mean_all,get_mean];
-    get_mean_name_all{1,k} = strcat('Cell_',tiff_name_raw{1,1},char(table2cell(Marker_list(k,1))));
+% % %     % load all Markers and create "get_mean"
+% % %     Name_to_load = fullfile(sessionData_mean_folder,...
+% % %         strcat('Cell_',tiff_name_raw{1,1},table2cell(Marker_list(k,1)),'.mat'));
+% % %     load(char(Name_to_load));
+% % %     % Create matrix with
+% % %     get_mean_all = [get_mean_all,get_mean];
+% % %     get_mean_name_all{1,k} = strcat('Cell_',tiff_name_raw{1,1},char(table2cell(Marker_list(k,1))));
 end
-disp('all means combined')
+% % % disp('all means combined')
 disp('all pixels combined')
 
 %% Run spatial
 %Run single cell processing
-disp('run spatial')
-[Fcs_Interest_all] = Process_SingleCell_Tiff_Mask_batch(Tiff_all,Tiff_name,...
-    Mask_all,Fcs_Interest_all,HashID,get_mean_all,get_mean_name_all,...
-    sessionData_mean_name,expansionpixels);
-disp('save CSV')
-writetable(Fcs_Interest_all{1,1},...
-    fullfile(sessionData_mean_folder, strcat(tiff_name_raw{1,1},'.csv')));
+% % % disp('run spatial')
+% % % [Fcs_Interest_all] = Process_SingleCell_Tiff_Mask_batch(Tiff_all,Tiff_name,...
+% % %     Mask_all,Fcs_Interest_all,HashID,get_mean_all,get_mean_name_all,...
+% % %     sessionData_mean_name,expansionpixels);
+% % % disp('save CSV')
+% % % writetable(Fcs_Interest_all{1,1},...
+% % %     fullfile(sessionData_mean_folder, strcat(tiff_name_raw{1,1},'.csv')));
 
 %% Run AF correlation
 disp('ran histoCAT!')
 %Read in csv file generated from histoCAT
-csv_file = readtable(fullfile(sessionData_mean_folder, strcat(tiff_name_raw{1,1},'.csv')));
+%csv_file = readtable(fullfile(sessionData_mean_folder, strcat(tiff_name_raw{1,1},'.csv')));
+csv_file = readtable(fullfile(strcat('/n/scratch2/en100/data/',tiff_name_raw{1,1},'.csv')));
 
 %Extract marker names
 Marker_list = table2array(readtable(Marker_CSV,'ReadVariableNames',false));
@@ -184,7 +185,6 @@ numMarkers = length(Marker_list);
 pixels_across_markers = {};
 
 for i = 1:numMarkers
-%     marker_pixels = load(strcat(pixel_path,'Cell_33466POST',Marker_list{i,1},'.mat'),'get_pixels');
     marker_pixels = load(fullfile(sessionData_pixel_folder,strcat('Cell_',tiff_name_raw{1,1},Marker_list{i,1},'.mat')),'get_pixels');
     %% Filter out cells that have 50 pixels or less
     marker_pixels_filtered = marker_pixels;
@@ -201,7 +201,7 @@ for i = 1:numMarkers
     pixels_across_markers{i} = marker_pixels_filtered.get_pixels;
 end
 
-save(strcat(tiff_name_raw{1,1},'_pixels_across_markers.mat'),'pixels_across_markers','-v7.3');
+save(strcat('/n/scratch2/en100/',tiff_name_raw{1,1},'_pixels_across_markers.mat'),'pixels_across_markers','-v7.3');
 disp('saved patient pixels');
 
 numCells = size(pixels_across_markers{1,1},1);
