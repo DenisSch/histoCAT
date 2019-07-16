@@ -177,8 +177,10 @@ disp('ran histoCAT!')
 %Define path where marker mean .mat files are saved
 % mean_path = strcat(samplefolders_str,'mean_output/33466POST/');
 % CSV_33466POST= readtable(fullfile(mean_path, '33466POST.csv'));
-mean_path = '/home/en100/Pixel_Correlation_Results/mean_output/Example/';
-csv_file = readtable(fullfile(mean_path, 'Example.csv'));
+%mean_path = '/home/en100/Pixel_Correlation_Results/mean_output/Example/';
+%csv_file = readtable(fullfile(mean_path, 'Example.csv'));
+
+csv_file = readtable(fullfile(sessionData_mean_folder, strcat(tiff_name_raw{1,1},'.csv')));
 
 %Extract marker names
 Marker_list = table2array(readtable(Marker_CSV,'ReadVariableNames',false));
@@ -188,11 +190,11 @@ numMarkers = length(Marker_list);
 pixels_across_markers = {};
 
 % pixel_path = strcat(samplefolders_str,'pixel_output/33466POST/');
-pixel_path = '/home/en100/Pixel_Correlation_Results/pixel_output/Example/';
+%pixel_path = '/home/en100/Pixel_Correlation_Results/pixel_output/Example/';
 
 for i = 1:numMarkers
 %     marker_pixels = load(strcat(pixel_path,'Cell_33466POST',Marker_list{i,1},'.mat'),'get_pixels');
-    marker_pixels = load(strcat(pixel_path,'Cell_Example',Marker_list{i,1},'.mat'),'get_pixels');
+    marker_pixels = load(strcat(sessionData_pixel_folder,'Cell_',tiff_name_raw{1,1},Marker_list{i,1},'.mat'),'get_pixels');
     %% Filter out cells that have 10 pixels or less
     marker_pixels_filtered = marker_pixels;
     
@@ -208,8 +210,8 @@ for i = 1:numMarkers
     pixels_across_markers{i} = marker_pixels_filtered.get_pixels;
 end
 
-% % % save('pixels_across_markers.mat','33466_POST_pixels_across_markers','-v7.3');
-% % % disp('saved patient pixels');
+save('pixels_across_markers.mat',strcat(tiff_name_raw{1,1},'_pixels_across_markers'),'-v7.3');
+disp('saved patient pixels');
 
 numCells = size(pixels_across_markers{1,1},1);
 
@@ -244,8 +246,7 @@ for j = 1:numCells %for each cell
             corrs(j,n-n_start+1,m-m_start+1) = R;
         end
     end
-    %Reshape to 2D 3x3 matrix 
-    %pears_corrs{j} = reshape(corrs(j,:,:),[4,4])';
+    %Reshape to 2D 3x3 matrix
     pears_corrs{j} = reshape(corrs(j,:,:),[4,4]);
 end
 toc
