@@ -6,10 +6,10 @@ addpath(genpath('/home/en100/histoCAT'))
 %Specify actual parameters to pass to Headless_histoCAT_loading.m
 samplefolders_str = '/home/en100/Images/';
 %tiff_name = '33466POST.ome.tif';
-tiff_name = strcat(samplefolders_str,'Example.tif');
+tiff_name = 'Example.tif';
 segmentationfolder_str = samplefolders_str;
 %mask_name = 'cellMask.tif';
-mask_name = strcat(samplefolders_str,'Mask.tif');
+mask_name = 'Mask.tif';
 Marker_CSV = strcat(samplefolders_str,'Triplet_8_markers.csv');
 expansionpixels = '30';
 
