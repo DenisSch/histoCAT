@@ -5,11 +5,15 @@ addpath(genpath('/home/en100/histoCAT'))
 
 %Specify actual parameters to pass to Headless_histoCAT_loading.m
 samplefolders_str = '/home/en100/Images/';
-tiff_name = '33466POST.ome.tif';
+%tiff_name = '33466POST.ome.tif';
+tiff_name = 'Example.tif';
 segmentationfolder_str = samplefolders_str;
-mask_name = 'cellMask.tif';
+%mask_name = 'cellMask.tif';
+mask_name = 'Mask.tif';
 Marker_CSV = 'Triplet_8_markers.csv';
 expansionpixels = '30';
+
+cd /home/en100/Pixel_Correlation_Results
 
 tic
 %Execute Headless_histoCAT_loading.m
@@ -23,8 +27,10 @@ toc
 disp('ran histoCAT!')
 
 %Define path where marker mean .mat files are saved
-mean_path = strcat(samplefolders_str,'mean_output/33466POST/');
-CSV_33466POST= readtable(fullfile(mean_path, '33466POST.csv'));
+% mean_path = strcat(samplefolders_str,'mean_output/33466POST/');
+% CSV_33466POST= readtable(fullfile(mean_path, '33466POST.csv'));
+mean_path = strcat(samplefolders_str,'mean_output/Example/');
+csv_file= readtable(fullfile(mean_path, 'Example.csv'));
 
 %Extract marker names
 Marker_list = table2array(readtable(Marker_CSV,'ReadVariableNames',false));
@@ -33,11 +39,12 @@ numMarkers = length(Marker_list);
 %Save pixel arrays for each cell across markers
 pixels_across_markers = {};
 
-pixel_path = strcat(samplefolders_str,'pixel_output/33466POST/');
+% pixel_path = strcat(samplefolders_str,'pixel_output/33466POST/');
+pixel_path = strcat(samplefolders_str,'pixel_output/Example/');
 
 for i = 1:numMarkers
-    marker_pixels = load(strcat(pixel_path,'Cell_33466POST',Marker_list{i,1},'.mat'),'get_pixels');
-    
+%     marker_pixels = load(strcat(pixel_path,'Cell_33466POST',Marker_list{i,1},'.mat'),'get_pixels');
+    marker_pixels = load(strcat(pixel_path,'Cell_Example',Marker_list{i,1},'.mat'),'get_pixels');
     %% Filter out cells that have 10 pixels or less
     marker_pixels_filtered = marker_pixels;
     
