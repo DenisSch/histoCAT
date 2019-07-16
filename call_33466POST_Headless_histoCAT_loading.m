@@ -31,7 +31,7 @@ disp('ran histoCAT!')
 % mean_path = strcat(samplefolders_str,'mean_output/33466POST/');
 % CSV_33466POST= readtable(fullfile(mean_path, '33466POST.csv'));
 mean_path = '/home/en100/Pixel_Correlation_Results/mean_output/Example/';
-csv_file= readtable(fullfile(mean_path, 'Example.csv'));
+csv_file = readtable(fullfile(mean_path, 'Example.csv'));
 
 %Extract marker names
 Marker_list = table2array(readtable(Marker_CSV,'ReadVariableNames',false));
@@ -120,7 +120,7 @@ end
 tiff_name_raw = strsplit(tiff_name,'.');
 
 f1 = figure('visible', 'off');
-scatter(exampleCSV.X_position(~cells_to_filter),exampleCSV.Y_position(~cells_to_filter),[],corr_label(:,1), 'filled')
+scatter(csv_file.X_position(~cells_to_filter),csv_file.Y_position(~cells_to_filter),[],corr_label(:,1), 'filled')
 colorbar
 caxis([-1 1])
 title(strcat('Pixel Pearson Correlation Across Cells (Hoechst1-Hoechst2)'))
@@ -129,7 +129,7 @@ saveas(gcf,strcat(tiff_name_raw{1,1},'-Hoechst1-Hoechst2-correlation','.tif'))
 close(f1)
 
 f2 = figure('visible', 'off');
-scatter(exampleCSV.X_position(~cells_to_filter),exampleCSV.Y_position(~cells_to_filter),[],corr_label(:,2), 'filled')
+scatter(csv_file.X_position(~cells_to_filter),csv_file.Y_position(~cells_to_filter),[],corr_label(:,2), 'filled')
 colorbar
 caxis([-1 1])
 title(strcat('Pixel Pearson Correlation Across Cells (A488-pERK)'))
@@ -138,7 +138,7 @@ saveas(gcf,strcat(tiff_name_raw{1,1},'-A488-pERK-correlation','.tif'))
 close(f2)
 
 f3 = figure('visible', 'off');
-scatter(exampleCSV.X_position(~cells_to_filter),exampleCSV.Y_position(~cells_to_filter),[],corr_label(:,3), 'filled')
+scatter(csv_file.X_position(~cells_to_filter),csv_file.Y_position(~cells_to_filter),[],corr_label(:,3), 'filled')
 colorbar
 caxis([-1 1])
 title(strcat('Pixel Pearson Correlation Across Cells (A555-AXL)'))
@@ -147,7 +147,7 @@ saveas(gcf,strcat(tiff_name_raw{1,1},'-A555-AXL-correlation','.tif'))
 close(f3)
 
 f4 = figure('visible', 'off');
-scatter(exampleCSV.X_position(~cells_to_filter),exampleCSV.Y_position(~cells_to_filter),[],corr_label(:,4), 'filled')
+scatter(csv_file.X_position(~cells_to_filter),csv_file.Y_position(~cells_to_filter),[],corr_label(:,4), 'filled')
 colorbar
 caxis([-1 1])
 title(strcat('Pixel Pearson Correlation Across Cells (A647-MITF)'))
