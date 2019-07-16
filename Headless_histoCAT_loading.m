@@ -173,13 +173,7 @@ writetable(Fcs_Interest_all{1,1},...
 
 %% Run AF correlation
 disp('ran histoCAT!')
-
-%Define path where marker mean .mat files are saved
-% mean_path = strcat(samplefolders_str,'mean_output/33466POST/');
-% CSV_33466POST= readtable(fullfile(mean_path, '33466POST.csv'));
-%mean_path = '/home/en100/Pixel_Correlation_Results/mean_output/Example/';
-%csv_file = readtable(fullfile(mean_path, 'Example.csv'));
-
+%Read in csv file generated from histoCAT
 csv_file = readtable(fullfile(sessionData_mean_folder, strcat(tiff_name_raw{1,1},'.csv')));
 
 %Extract marker names
@@ -189,13 +183,10 @@ numMarkers = length(Marker_list);
 %Save pixel arrays for each cell across markers
 pixels_across_markers = {};
 
-% pixel_path = strcat(samplefolders_str,'pixel_output/33466POST/');
-%pixel_path = '/home/en100/Pixel_Correlation_Results/pixel_output/Example/';
-
 for i = 1:numMarkers
 %     marker_pixels = load(strcat(pixel_path,'Cell_33466POST',Marker_list{i,1},'.mat'),'get_pixels');
     marker_pixels = load(fullfile(sessionData_pixel_folder,strcat('Cell_',tiff_name_raw{1,1},Marker_list{i,1},'.mat')),'get_pixels');
-    %% Filter out cells that have 10 pixels or less
+    %% Filter out cells that have 50 pixels or less
     marker_pixels_filtered = marker_pixels;
     
     pixel_lengths = [];
