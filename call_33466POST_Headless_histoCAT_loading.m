@@ -2,7 +2,7 @@ clear all
 clc
 
 %addpath(genpath('/home/en100/histoCAT'))
-%addpath(genpath('/home/en100/Pixel_Correlation_Results/'))
+addpath(genpath('/home/en100/Pixel_Correlation_Results/'))
 
 %Specify actual parameters to pass to Headless_histoCAT_loading.m
 samplefolders_str = '/home/en100/Images/';
