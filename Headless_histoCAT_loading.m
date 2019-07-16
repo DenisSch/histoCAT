@@ -194,7 +194,7 @@ pixels_across_markers = {};
 
 for i = 1:numMarkers
 %     marker_pixels = load(strcat(pixel_path,'Cell_33466POST',Marker_list{i,1},'.mat'),'get_pixels');
-    marker_pixels = load(fullfile(strcat(sessionData_pixel_folder,'Cell_',tiff_name_raw{1,1},Marker_list{i,1},'.mat'),'get_pixels'));
+    marker_pixels = load(fullfile(sessionData_pixel_folder,strcat('Cell_',tiff_name_raw{1,1},Marker_list{i,1},'.mat'),'get_pixels'));
     %% Filter out cells that have 10 pixels or less
     marker_pixels_filtered = marker_pixels;
     
