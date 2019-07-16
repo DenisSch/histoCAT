@@ -210,7 +210,7 @@ for i = 1:numMarkers
     pixels_across_markers{i} = marker_pixels_filtered.get_pixels;
 end
 
-save('pixels_across_markers.mat',strcat(tiff_name_raw{1,1},'_pixels_across_markers'),'-v7.3');
+save(strcat(tiff_name_raw{1,1},'_pixels_across_markers.mat'),'pixels_across_markers','-v7.3');
 disp('saved patient pixels');
 
 numCells = size(pixels_across_markers{1,1},1);
