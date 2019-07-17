@@ -249,6 +249,7 @@ end
 
 tiff_name_raw = strsplit(tiff_name,'.');
 
+%Plot Pixel Correlations between AF cycle and cycle 1
 f1 = figure('visible', 'off');
 scatter(csv_file.X_position(~cells_to_filter),csv_file.Y_position(~cells_to_filter),5,corr_label(:,1), 'filled')
 colorbar
@@ -293,6 +294,33 @@ saveas(gcf,strcat(tiff_name_raw{1,1},'-A647-MITF-correlation','.fig'))
 saveas(gcf,strcat(tiff_name_raw{1,1},'-A647-MITF-correlation','.tif')) 
 close(f4)
 
+%Plot individual marker intensities from AF cycle and cycle 1:
+%A488
+markerIntensityPlot(csv_file,cells_to_filter,Marker_list{2},tiff_name_raw{1,1})
+%A555
+markerIntensityPlot(csv_file,cells_to_filter,Marker_list{3},tiff_name_raw{1,1})
+%A647
+markerIntensityPlot(csv_file,cells_to_filter,Marker_list{4},tiff_name_raw{1,1})
+%pERK
+markerIntensityPlot(csv_file,cells_to_filter,Marker_list{6},tiff_name_raw{1,1})
+%AXL
+markerIntensityPlot(csv_file,cells_to_filter,Marker_list{7},tiff_name_raw{1,1})
+%MITF
+markerIntensityPlot(csv_file,cells_to_filter,Marker_list{8},tiff_name_raw{1,1})
+
+function [] = markerIntensityPlot(csvData,cellsFilter,markerName,tiffName)
+    f = figure('visible', 'off');
+    markerIntensity = csvData.(markerName);
+    scatter(csvData.X_position(~cellsFilter),csvData.Y_position(~cellsFilter),5,markerIntensity(~cellsFilter), 'filled')
+    colorbar
+    caxis([7 11])
+    xlabel('X position')
+    ylabel('Y position')
+    title(strcat(markerName,{' '},'Intensity Across Cells'))
+    saveas(gcf,strcat(tiffName,'-',markerName,'-intensity','.fig'))
+    saveas(gcf,strcat(tiffName,'-',markerName,'-intensity','.tif')) 
+    close(f)
+end
 
 end
 
