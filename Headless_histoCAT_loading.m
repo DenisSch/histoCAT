@@ -174,7 +174,9 @@ disp('all pixels combined')
 disp('ran histoCAT!')
 %Read in csv file generated from histoCAT
 %csv_file = readtable(fullfile(sessionData_mean_folder, strcat(tiff_name_raw{1,1},'.csv')));
+%csv_file = readtable(fullfile(strcat('/Users/ediknovik/Dropbox/Harvard-University/HMS-HiTS-LSP-Internship-2019/Triplet-Code/Melanoma_Triplet/auto-fluorescence-correction/mean_output/Example/',tiff_name_raw{1,1},'.csv')));
 csv_file = readtable(fullfile(strcat('/n/scratch2/en100/data/',tiff_name_raw{1,1},'.csv')));
+
 
 %Extract marker names
 Marker_list = table2array(readtable(Marker_CSV,'ReadVariableNames',false));
@@ -201,6 +203,7 @@ for i = 1:numMarkers
 end
 
 save(strcat('/n/scratch2/en100/',tiff_name_raw{1,1},'_pixels_across_markers.mat'),'pixels_across_markers','-v7.3');
+%save(strcat(tiff_name_raw{1,1},'_pixels_across_markers.mat'),'pixels_across_markers','-v7.3');
 disp('saved patient pixels');
 
 numCells = size(pixels_across_markers{1,1},1);
@@ -296,21 +299,21 @@ close(f4)
 
 %Plot individual marker intensities from AF cycle and cycle 1:
 %A488
-markerIntensityPlot(csv_file,cells_to_filter,Marker_list{2},tiff_name_raw{1,1})
+markerIntensityPlot(csv_file,cells_to_filter,Marker_list{2},4,tiff_name_raw{1,1})
 %A555
-markerIntensityPlot(csv_file,cells_to_filter,Marker_list{3},tiff_name_raw{1,1})
+markerIntensityPlot(csv_file,cells_to_filter,Marker_list{3},5,tiff_name_raw{1,1})
 %A647
-markerIntensityPlot(csv_file,cells_to_filter,Marker_list{4},tiff_name_raw{1,1})
+markerIntensityPlot(csv_file,cells_to_filter,Marker_list{4},6,tiff_name_raw{1,1})
 %pERK
-markerIntensityPlot(csv_file,cells_to_filter,Marker_list{6},tiff_name_raw{1,1})
+markerIntensityPlot(csv_file,cells_to_filter,Marker_list{6},8,tiff_name_raw{1,1})
 %AXL
-markerIntensityPlot(csv_file,cells_to_filter,Marker_list{7},tiff_name_raw{1,1})
+markerIntensityPlot(csv_file,cells_to_filter,Marker_list{7},9,tiff_name_raw{1,1})
 %MITF
-markerIntensityPlot(csv_file,cells_to_filter,Marker_list{8},tiff_name_raw{1,1})
+markerIntensityPlot(csv_file,cells_to_filter,Marker_list{8},10,tiff_name_raw{1,1})
 
-function [] = markerIntensityPlot(csvData,cellsFilter,markerName,tiffName)
+function [] = markerIntensityPlot(csvData,cellsFilter,markerName,colMarkeIndex,tiffName)
     f = figure('visible', 'off');
-    markerIntensity = csvData.(markerName);
+    markerIntensity = csvData.(colMarkeIndex);
     scatter(csvData.X_position(~cellsFilter),csvData.Y_position(~cellsFilter),5,markerIntensity(~cellsFilter), 'filled')
     colorbar
     caxis([7 11])
