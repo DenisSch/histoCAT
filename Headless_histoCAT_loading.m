@@ -38,7 +38,7 @@ global Tiff_name
 
 % Transformation: option_list = {'Do not transform data','arcsinh','log'};
 transform_option_batch = 'log';
-
+tic 
 %% Check if data already exist otherwise extract extract code from "Master_LoadSamples"
 % Call global variables
 global Mask_all
@@ -324,6 +324,7 @@ function [] = markerIntensityPlot(csvData,cellsFilter,markerName,colMarkeIndex,t
     saveas(gcf,strcat(tiffName,'-',markerName,'-intensity','.tif')) 
     close(f)
 end
-
+disp('Overlap computation time:')
+toc
 end
 
