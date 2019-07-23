@@ -21,7 +21,7 @@ function [Fcs_Interest_all] = Process_SingleCell_Tiff_Mask(Tiff_all,Tiff_name,Ma
 % Denis Schapiro - Bodenmiller Group - UZH
 
 % Get global variables
-global Sample_Set_arranged 
+global Sample_Set_arranged
 
 
 %Call tiff names generating function
@@ -56,11 +56,16 @@ XY = {'X_position','Y_position'};
 allvarnames = [allvarnames_nospatial, BasicFeatures,XY];
 
 % Ask user how to transform the data
-option_list = {'Do not transform data','arcsinh','log'};
-% Get response
-transform_option = listdlg('ListString',option_list);
-% Extract the string which was selected
-transform_option_string = option_list(transform_option);
+global transform_option_batch
+if isempty(transform_option_batch) == 0
+    transform_option_string = transform_option_batch;
+else
+    option_list = {'Do not transform data','arcsinh','log'};
+    % Get response
+    transform_option = listdlg('ListString',option_list);
+    % Extract the string which was selected
+    transform_option_string = option_list(transform_option);
+end
 
 % If arcsinh selected, what co-factor should be used?
 if strcmp(transform_option_string,'arcsinh')==1
@@ -88,16 +93,17 @@ for k=1:size(masks,2)
             
             %Check if tiff is empty -> multipage tiff
             if chandat(k,1) == 0
-               large_tiff_location = fullfile(Sample_Set_arranged{k,1},'33466POST.ome.tif');
-               get_mean = @(chan) struct2array(regionprops(Current_Mask, imread(large_tiff_location,chan), 'MeanIntensity'))';
-               mean_tab = cell2mat(arrayfun(get_mean,1:length(chandat), 'UniformOutput',0));
-               
+                global tiff_name
+                systems
+                large_tiff_location = fullfile(Sample_Set_arranged{k,1},tiff_name);
+                get_mean = struct2array(regionprops(Current_Mask, imread(large_tiff_location,1), 'MeanIntensity'))';
+                
             else
                 
-            %Prepare to get the mean intensities of all channels
-            get_mean = @(chan) struct2array(regionprops(Current_Mask, chandat{chan}, 'MeanIntensity'))';
-            mean_tab = cell2mat(arrayfun(get_mean,1:length(chandat), 'UniformOutput',0));
-            
+                %Prepare to get the mean intensities of all channe   ls
+                get_mean = @(chan) struct2array(regionprops(Current_Mask, chandat{chan}, 'MeanIntensity'))';
+                mean_tab = cell2mat(arrayfun(get_mean,1:length(chandat), 'UniformOutput',0));
+                
             end
             
             %Get spatial features similar to CellProfiler
@@ -107,11 +113,11 @@ for k=1:size(masks,2)
             
             %Transform single cell data as selected by user
             if strcmp(transform_option_string,'Do not transform data')==1
-               Current_singlecellinfo_nospatial = mean_tab;
+                Current_singlecellinfo_nospatial = mean_tab;
             elseif strcmp(transform_option_string,'arcsinh')==1
-               Current_singlecellinfo_nospatial = asinh(mean_tab ./ arcsinh_cofactor{1});
+                Current_singlecellinfo_nospatial = asinh(mean_tab ./ arcsinh_cofactor{1});
             elseif strcmp(transform_option_string,'log')==1
-               Current_singlecellinfo_nospatial = log(mean_tab);
+                Current_singlecellinfo_nospatial = log(mean_tab);
             end
             
             %If RNA channels with spot detection masks are in the sample,

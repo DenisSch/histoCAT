@@ -185,10 +185,15 @@ catch
     end
     
     %Save original cellIDs in order to be able to map the cells back to
-    %other cellProfiler output (the original cellIDs will be reassigned when exporting as CSV/fcs)
+    %other cellProfiler output (the original cellIDs will be reassigned when exporting as CSV/fcs
+    % Try and catch just for batch mode now
+    try
     CellIDs_by_CellProfiler = retr('CellIDs_by_CellProfiler');
     CellIDs_by_CellProfiler{i} = cellIDs;
     put('CellIDs_by_CellProfiler',CellIDs_by_CellProfiler);
+    catch
+    disp('mask_not_referenced_to_CP');    
+    end
 end
 
 

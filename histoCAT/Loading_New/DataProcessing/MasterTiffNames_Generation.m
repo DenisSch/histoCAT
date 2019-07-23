@@ -82,11 +82,11 @@ for fnum=1:size(Tiff_name,1)
             
             %Store the respective Tiff all matrix
             curnam = [Tiff_all(fnum,ntempty)];
-            tiff_matrix{fnum,1}(idx_curr)   = curnam(tiffchanidx); 
+            tiff_matrix{fnum,1}(idx_curr) = curnam(tiffchanidx); 
             name_assigned{fnum}(idx_curr) = onlynamesall(idx_all);
             
             %Store the cell names
-            cell_name{fnum,1}(idx_curr)     = strcat('Cell_',name_assigned{fnum}(idx_curr));
+            cell_name{fnum,1}(idx_curr)= strcat('Cell_',name_assigned{fnum}(idx_curr));
         end
     end
 end
