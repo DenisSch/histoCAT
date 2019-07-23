@@ -231,6 +231,9 @@ for j = 1:numCells %for each cell
             cell_j_marker_n = double(pixels_across_markers{1,n}{j,1});
             cell_j_marker_m = double(pixels_across_markers{1,m}{j,1});
             
+            cell_j_marker_n = mynormalize(cell_j_marker_n, 5);
+            cell_j_marker_m = mynormalize(cell_j_marker_m, 5);
+            
             pearson_corr = corrcoef(cell_j_marker_n, cell_j_marker_m);
             %extract correlation coefficient
             R = pearson_corr(1,2); %either off-diagonal (1,2) or (2,1) works
@@ -324,7 +327,7 @@ function [] = markerIntensityPlot(csvData,cellsFilter,markerName,colMarkeIndex,t
     saveas(gcf,strcat(tiffName,'-',markerName,'-intensity','.tif')) 
     close(f)
 end
-disp('Overlap computation time:')
+disp('Overall computation time:')
 toc
 end
 
