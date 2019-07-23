@@ -95,8 +95,21 @@ Current_singlecellinfo= [Current_singlecellinfo_nospatial, BasicFeatures_Matrix]
 
 if strcmp(neighbors,'no') == 1
     disp('skip neighbors')
-    % "No neighborhood calculation" selected
-    Fcs_Interest_all{1,1} = array2table(Current_singlecellinfo,'VariableNames',Current_channels);
+    
+    % Extract Cell ID's from current mask
+    lenIDs = unique(Current_Mask);
+    len = double(lenIDs(lenIDs ~= 0));
+    CellId = len';
+    % Store HashID as the imageID (first column)
+    imid_cellid = cellfun(@(x) [hex2dec(HashID{1}) x],num2cell(CellId),'UniformOutput',false);
+    % Create table for ImageId and CellId
+    temp_tableimidcellid = cell2mat(imid_cellid');
+ 
+    % "No neighborhood calculation" selected - add Image ID and Cell ID to
+    % output CSV file.
+    Fcs_Interest_all{1,1} = array2table([temp_tableimidcellid Current_singlecellinfo],'VariableNames',[{'ImageId','CellId'},allvarnames]);
+
+    
     
 elseif strcmp(neighbors,'yes') == 1
     disp('running neighbors')
