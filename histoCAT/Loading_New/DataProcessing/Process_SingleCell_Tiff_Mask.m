@@ -48,9 +48,11 @@ idx_cel = find(~cellfun('isempty',struct2cell(Mask_all)));
 allvarnames_nospatial = unique([cell_name{idx_cel}],'stable');
 
 %Add spatial features to variable names
-BasicFeatures = {'Area', 'Eccentricity', 'Solidity', 'Extent', ...
-    'EulerNumber', 'Perimeter',...
-    'MajorAxisLength', 'MinorAxisLength', 'Orientation'};
+BasicFeatures = {'Area'};
+% Removed 2020/03/24 to improve performance    
+%BasicFeatures = {'Area', 'Eccentricity', 'Solidity', 'Extent', ...
+%    'EulerNumber', 'Perimeter',...
+%    'MajorAxisLength', 'MinorAxisLength', 'Orientation'};
 %Add X and Y
 XY = {'X_position','Y_position'};
 allvarnames = [allvarnames_nospatial, BasicFeatures,XY];
